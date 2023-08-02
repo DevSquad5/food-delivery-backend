@@ -1,14 +1,17 @@
-const userDatailsService = async (req, dataModel) => {
+const userDetailsService = async (req, dataModel) => {
   try {
+    const { email } = req.headers.user;
+    debugger;
     const user = await dataModel.aggregate([
       {
-        $match: { email: req.headers.email },
+        $match: { email:email },
       },
     ]);
-    return { status: 'Success', data: user };
+    debugger;
+    return { status: 'success', data: user };
   } catch (error) {
     return { status: 'fail', data: error.toString() };
   }
 };
 
-module.exports = userDatailsService;
+module.exports = userDetailsService;

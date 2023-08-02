@@ -1,11 +1,12 @@
 const userUpdateService = async (req, dataModel) => {
   try {
-    const { firstName, lastName, mobile } = req.body;
+    const { email } = req.headers.user;
+    const { firstName, lastName, phoneNo,password } = req.body;
     const user = await dataModel.updateOne(
-      { email: req.headers.email },
-      { firstName, lastName, mobile },
+      { email: email },
+      { firstName, lastName, phoneNo,password },
     );
-    return { status: 'Success', data: user };
+    return { status: 'success', data: user };
   } catch (error) {
     return { status: 'fail', data: error.toString() };
   }

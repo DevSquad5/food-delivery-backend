@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const createToekn = require('../../utility/createToken');
+const createToken = require('../../utility/createToken');
 
 const customerLoginService = async (req, DataModel) => {
   try {
@@ -39,7 +39,7 @@ const customerLoginService = async (req, DataModel) => {
           photo: user.photo,
         };
 
-        const token = createToekn(payload);
+        const token = createToken(payload);
         return { status: 'Success', token, data: payload };
       }
       return { msg: 'Login failed! Please try again.' };

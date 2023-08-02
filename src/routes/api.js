@@ -1,6 +1,7 @@
 const express = require('express');
 const ItemCategoryController = require('../controllers/MenuItem/ItemCategoryController');
 const ItemController = require('../controllers/MenuItem/ItemController');
+const adminController = require('../controllers/admin/adminController');
 const {
   registration,
   getUserProfile,
@@ -68,5 +69,14 @@ router.get(
   ItemController.categoryWiseItems,
 );
 router.get('/deleteItem/:id', ItemController.deleteItem);
+
+//Admin
+router.post('/registration/admin', adminController.Registration);
+router.post('/login/admin', adminController.Login);
+router.post('/updateProfile/admin', authVerifyMiddleware, adminController.updateProfile);
+router.get('/profile/admin', authVerifyMiddleware,adminController.getAdminProfile);
+router.get('/recoverVerifyEmail/admin/:email', adminController.recoverVerifyEmail);
+router.get('/recoverVerifyOTP/admin/:email/:otp', adminController.recoverVerifyOTP);
+router.post('/resetPassword/admin',adminController.resetPassword);
 
 module.exports = router;
