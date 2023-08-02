@@ -44,18 +44,29 @@ router.get('/deleteLocation/:id', deleteLocation);
 
 // Item Category
 router.post('/CreateItemCategory', ItemCategoryController.CreateItemCategory);
-router.post('/UpdateItemCategory/:id', ItemCategoryController.UpdateItemCategory);
+router.post(
+  '/UpdateItemCategory/:id',
+  ItemCategoryController.UpdateItemCategory,
+);
 router.get('/ItemCategoryList', ItemCategoryController.ItemCategoryList);
-router.get('/CategoryTypesDropDown', ItemCategoryController.CategoryTypesDropDown);
-router.get('/categoryWiseNumOfMenuItem', ItemCategoryController.categoryWiseNumOfMenuItem);
+router.get(
+  '/CategoryTypesDropDown',
+  ItemCategoryController.CategoryTypesDropDown,
+);
+router.get(
+  '/categoryWiseNumOfMenuItem',
+  ItemCategoryController.categoryWiseNumOfMenuItem,
+);
 router.get('/deleteCategory/:id', ItemCategoryController.deleteCategory);
 
 // Menu Item
 router.post('/CreateItem', ItemController.CreateItem);
 router.post('/UpdateItem/:id', ItemController.UpdateItem);
 router.get('/ItemList/:searchKeyword', ItemController.ItemList);
-router.get('/categoryWiseItems/:searchKeyword', ItemController.categoryWiseItems);
-router.get('/deleteItem/:id',ItemController.deleteItem );
-
+router.get(
+  '/categoryWiseItems/:searchKeyword',
+  ItemController.categoryWiseItems,
+);
+router.get('/deleteItem/:id', ItemController.deleteItem);
 
 module.exports = router;
