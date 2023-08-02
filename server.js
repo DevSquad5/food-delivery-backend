@@ -1,3 +1,6 @@
+// Cloudinary Lib Import
+const cloudinary = require('cloudinary');
+
 const express = require('express');
 const dotenv = require('dotenv');
 // Security Middleware Lib Import
@@ -39,6 +42,12 @@ readdirSync('./src/routes/').map((r) => app.use('/api/v1', require(`./src/routes
 // Undefined Route Implement
 app.use('*', (req, res) => {
   res.status(404).json({ status: 'fail', data: 'Not Found' });
+});
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // Mongoose connection and run the server
