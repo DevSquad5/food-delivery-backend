@@ -44,6 +44,7 @@ router.get('/deleteLocation/:id', deleteLocation);
 
 // Item Category
 router.post('/CreateItemCategory', ItemCategoryController.CreateItemCategory);
+router.get('/GetMenuItemById/:id', ItemController.GetMenuItemById);
 router.post(
   '/UpdateItemCategory/:id',
   ItemCategoryController.UpdateItemCategory,
