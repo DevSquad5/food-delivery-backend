@@ -5,6 +5,7 @@ const CreateService = require('../../services/common/CreateService');
 const UpdateService = require('../../services/common/UpdateService');
 const DropDownService = require('../../services/common/DropDownService');
 const DeleteService = require('../../services/common/DeleteService');
+const DetailsByIDService = require('../../services/common/DetailsByIDService');
 const CheckAssociateService = require('../../services/common/CheckAssociateService');
 
 const { ObjectId } = mongoose.Types;
@@ -19,12 +20,10 @@ exports.UpdateItemCategory = async (req, res) => {
 };
 
 exports.ItemCategoryList = async (req, res) => {
-  try {
-    const Result = await DataModel.find();
-    res.status(200).json({ status: 'success', data: Result });
-  } catch (error) {
-    res.status(200).json({ status: 'fail', data: error.toSting });
-  }
+  const SearchRgx = { $regex: req.params.searchKeyword, $options: 'i' };
+  const SearchArray = [{ ItemCategory: SearchRgx }];
+  const Result = await ListService(req, DataModel, SearchArray);
+  res.status(200).json(Result);
 };
 exports.CategoryTypesDropDown = async (req, res) => {
   const Result = await DropDownService(req, DataModel, { _id: 1, ItemCategory: 1 });

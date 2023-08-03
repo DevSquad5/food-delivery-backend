@@ -1,13 +1,11 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
 const DetailsByIDService = async (Request, DataModel) => {
   try {
     const DetailsID = Request.params.id;
-    const UserEmail = Request.headers.email;
-
-    const { ObjectId } = mongoose.Types;
-    const QueryObject = { _id: ObjectId(DetailsID), UserEmail };
-
+    //    const UserEmail = Request.headers.email;
+    // const { ObjectId } = mongoose.Types;
+    const QueryObject = { _id: DetailsID };
     const data = await DataModel.aggregate([
       { $match: QueryObject },
     ]);
