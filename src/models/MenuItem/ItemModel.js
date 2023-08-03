@@ -4,8 +4,8 @@ const DataSchema = mongoose.Schema({
   CategoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'ItemCategories', required: true },
   ItemName: { type: String },
   Description: { type: String },
-  UnitPrice: { type: String },
-  Discount: { type: String },
+  UnitPrice: { type: Number },
+  Discount: { type: Number },
   ItemImage: { type: String },
   CreatedDate: { type: Date, default: Date.now() },
 }, { versionKey: false });
