@@ -3,8 +3,8 @@ const ListService = async (Request, DataModel, SearchArray) => {
     const pageNo = Number(Request.params.pageNo);
     const perPage = Number(Request.params.perPage);
     const searchValue = Request.params.searchKeyword;
-    const UserEmail = Request.headers.email;
-
+    //const UserEmail = Request.headers.email;
+    debugger;
     const skipRow = (pageNo - 1) * perPage;
 
     let data;
@@ -12,8 +12,8 @@ const ListService = async (Request, DataModel, SearchArray) => {
     if (searchValue !== '0') {
       const SearchQuery = { $or: SearchArray };
       data = await DataModel.aggregate([
-        { $match: { UserEmail } },
         { $match: SearchQuery },
+        
         {
           $facet: {
             Total: [{ $count: 'count' }],
@@ -21,9 +21,9 @@ const ListService = async (Request, DataModel, SearchArray) => {
           },
         },
       ]);
+      debugger;
     } else {
       data = await DataModel.aggregate([
-        { $match: { UserEmail } },
         {
           $facet: {
             Total: [{ $count: 'count' }],
@@ -31,6 +31,7 @@ const ListService = async (Request, DataModel, SearchArray) => {
           },
         },
       ]);
+      debugger;
     }
     return { status: 'success', data };
   } catch (error) {

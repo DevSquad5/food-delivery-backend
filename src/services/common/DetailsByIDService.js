@@ -3,16 +3,18 @@ const mongoose = require('mongoose');
 const DetailsByIDService = async (Request, DataModel) => {
   try {
     const DetailsID = Request.params.id;
-    const UserEmail = Request.headers.email;
-
+//    const UserEmail = Request.headers.email;
+debugger;
     const { ObjectId } = mongoose.Types;
-    const QueryObject = { _id: ObjectId(DetailsID), UserEmail };
-
+    const QueryObject = { _id: DetailsID};
+debugger;
     const data = await DataModel.aggregate([
-      { $match: QueryObject },
+      { $match: QueryObject }
     ]);
-    return { status: 'success', data };
+    debugger;
+    return { status: 'success', data:data };
   } catch (error) {
+    debugger;
     return { status: 'fail', data: error };
   }
 };

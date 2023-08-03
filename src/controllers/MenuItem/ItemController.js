@@ -15,13 +15,16 @@ exports.CreateItem = async (req, res) => {
 
 exports.ItemList = async (req, res) => {
   const SearchRgx = { $regex: req.params.searchKeyword, $options: 'i' };
+  debugger;
   const JoinStage = {
     $lookup: {
       from: 'itemcategories', localField: 'CategoryId', foreignField: '_id', as: 'category',
     },
   };
-  const SearchArray = [{ ItemName: SearchRgx }, { 'category.ItemCategory': SearchRgx }];
+  const SearchArray = [{ ItemName: SearchRgx }, { 'category.ItemCategory': SearchRgx },{Discount:SearchRgx },{UnitPrice:SearchRgx },{Description:SearchRgx }];
+  debugger;
   const Result = await ListOneJoinService(req, DataModel, SearchArray, JoinStage);
+  debugger;
   res.status(200).json(Result);
 };
 

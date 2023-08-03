@@ -4,8 +4,10 @@ const CreateService = require('../../services/common/CreateService');
 const UpdateService = require('../../services/common/UpdateService');
 const DropDownService = require('../../services/common/DropDownService');
 const DeleteService = require('../../services/common/DeleteService');
+const DetailsByIDService = require('../../services/common/DetailsByIDService');
 const CheckAssociateService = require('../../services/common/CheckAssociateService');
 const mongoose = require("mongoose");
+const ListService = require('../../services/common/ListService');
 const ObjectId = mongoose.Types.ObjectId;
 exports.CreateItemCategory = async (req, res) => {
   const Result = await CreateService(req, DataModel);
@@ -18,12 +20,11 @@ exports.UpdateItemCategory = async (req, res) => {
 };
 
 exports.ItemCategoryList = async (req, res) => {
-  try {
-    const Result = await DataModel.find();
-    res.status(200).json({ status: 'success', data: Result });
-  } catch (error) {
-    res.status(200).json({ status: 'fail', data: error.toSting });
-  }
+  let SearchRgx = { "$regex": req.params.searchKeyword, "$options": "i" }
+  let SearchArray = [{ ItemCategory: SearchRgx }]
+  debugger;
+  let Result = await ListService(req, DataModel, SearchArray)
+  res.status(200).json(Result)
 };
 exports.CategoryTypesDropDown = async (req, res) => {
   const Result = await DropDownService(req, DataModel, { _id: 1, ItemCategory: 1 });
@@ -74,4 +75,9 @@ exports.deleteCategory = async (req, res) => {
     let Result = await DeleteService(req, DataModel);
     res.status(200).json(Result)
   }
+}
+
+exports.MenuItemTypesDetailsByID=async (req, res) => {
+  let Result= await DetailsByIDService(req,DataModel)
+  res.status(200).json(Result)
 }
