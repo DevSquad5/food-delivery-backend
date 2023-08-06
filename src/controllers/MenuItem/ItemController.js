@@ -1,13 +1,13 @@
 const DataModel = require('../../models/MenuItem/ItemModel');
 const CreateService = require('../../services/common/CreateService');
 const ListOneJoinService = require('../../services/common/ListOneJoinService');
+const OneJoinDetailsByIdService = require('../../services/common/OneJoinDetailsByIdService');
 const UpdateService = require('../../services/common/UpdateService');
 const ListOneJoinServiceCategory = require('../../services/common/ListOneJoinServiceCategory');
 const DeleteService = require('../../services/common/DeleteService');
 
 exports.status = async (req, res) => {
-  res
-    .status(200)
+  res.status(200)
     .json({ status: 'success', message: 'The backend is running' });
 };
 
@@ -87,5 +87,18 @@ exports.categoryWiseItems = async (req, res) => {
 
 exports.deleteItem = async (req, res) => {
   const Result = await DeleteService(req, DataModel);
+  res.status(200).json(Result);
+};
+
+exports.GetItemDetailsById = async (req, res) => {
+  const JoinStage = {
+    $lookup: {
+      from: 'itemcategories',
+      localField: 'CategoryId',
+      foreignField: '_id',
+      as: 'category',
+    },
+  };
+  const Result = await OneJoinDetailsByIdService(req, DataModel, JoinStage);
   res.status(200).json(Result);
 };

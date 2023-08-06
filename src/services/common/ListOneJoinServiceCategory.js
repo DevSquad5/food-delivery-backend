@@ -2,7 +2,7 @@ const ListOneJoinServiceCategory = async (Request, DataModel, SearchArray, JoinS
   try {
     const searchValue = Request.params.searchKeyword;
     let data;
-    //Unary operator
+    // Unary operator
     (searchValue !== '0') ? data = await DataModel.aggregate([
       JoinStage,
       {
@@ -49,8 +49,6 @@ const ListOneJoinServiceCategory = async (Request, DataModel, SearchArray, JoinS
         },
       },
     ]);
-
-
 
     return { status: 'success', data };
   } catch (error) {

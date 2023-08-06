@@ -46,21 +46,12 @@ router.get('/deleteLocation/:id', deleteLocation);
 // Item Category
 router.post('/CreateItemCategory', ItemCategoryController.CreateItemCategory);
 router.get('/GetMenuItemById/:id', ItemController.GetMenuItemById);
-router.post(
-  '/UpdateItemCategory/:id',
-  ItemCategoryController.UpdateItemCategory,
-);
-router.get('/ItemCategoryList', ItemCategoryController.ItemCategoryList);
-router.get(
-  '/CategoryTypesDropDown',
-  ItemCategoryController.CategoryTypesDropDown,
-);
-router.get(
-  '/categoryWiseNumOfMenuItem',
-  ItemCategoryController.categoryWiseNumOfMenuItem,
-);
+router.post('/UpdateItemCategory/:id', ItemCategoryController.UpdateItemCategory);
+router.get('/ItemCategoryList/:pageNo/:perPage/:searchKeyword', ItemCategoryController.ItemCategoryList);
+router.get('/CategoryTypesDropDown', ItemCategoryController.CategoryTypesDropDown);
+router.get('/categoryWiseNumOfMenuItem', ItemCategoryController.categoryWiseNumOfMenuItem);
 router.get('/deleteCategory/:id', ItemCategoryController.deleteCategory);
-router.get('/MenuItemTypesDetailsByID/:id', ItemCategoryController.MenuItemTypesDetailsByID);
+/* router.get('/MenuItemTypesDetailsByID/:id', ItemCategoryController.MenuItemTypesDetailsByID); */
 
 // Menu Item
 router.post('/CreateItem', ItemController.CreateItem);
@@ -68,6 +59,8 @@ router.post('/UpdateItem/:id', ItemController.UpdateItem);
 router.get('/ItemList/:pageNo/:perPage/:searchKeyword', ItemController.ItemList);
 router.get('/categoryWiseItems/:searchKeyword', ItemController.categoryWiseItems);
 router.get('/deleteItem/:id', ItemController.deleteItem);
+router.get('/GetMenuItemById/:id', ItemController.GetMenuItemById);
+router.get('/GetItemDetailsById/:id', ItemController.GetItemDetailsById);
 
 // Admin
 router.post('/registration/admin', adminController.Registration);
@@ -77,5 +70,6 @@ router.get('/profile/admin', authVerifyMiddleware, adminController.getAdminProfi
 router.get('/recoverVerifyEmail/admin/:email', adminController.recoverVerifyEmail);
 router.get('/recoverVerifyOTP/admin/:email/:otp', adminController.recoverVerifyOTP);
 router.post('/resetPassword/admin', adminController.resetPassword);
+router.get('/getUsers/:pageNo/:perPage/:searchKeyword', authVerifyMiddleware, adminController.getUsers);
 
 module.exports = router;

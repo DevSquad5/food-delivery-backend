@@ -5,10 +5,12 @@ const CreateService = require('../../services/common/CreateService');
 const UpdateService = require('../../services/common/UpdateService');
 const DropDownService = require('../../services/common/DropDownService');
 const DeleteService = require('../../services/common/DeleteService');
-const DetailsByIDService = require('../../services/common/DetailsByIDService');
+// const DetailsByIDService = require('../../services/common/DetailsByIDService');
 const CheckAssociateService = require('../../services/common/CheckAssociateService');
+const ListService = require('../../services/common/ListService');
 
 const { ObjectId } = mongoose.Types;
+
 exports.CreateItemCategory = async (req, res) => {
   const Result = await CreateService(req, DataModel);
   res.status(200).json(Result);
@@ -25,6 +27,7 @@ exports.ItemCategoryList = async (req, res) => {
   const Result = await ListService(req, DataModel, SearchArray);
   res.status(200).json(Result);
 };
+
 exports.CategoryTypesDropDown = async (req, res) => {
   const Result = await DropDownService(req, DataModel, { _id: 1, ItemCategory: 1 });
   res.status(200).json(Result);

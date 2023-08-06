@@ -1,31 +1,33 @@
-const DataModel = require("../../models/admin/adminModel");
-const OTPModel = require("../../models/customer/OTPModel");
-const customerCreateService = require("../../services/user/customerCreateService");
-const customerLoginService = require("../../services/user/customerLoginService");
-const userUpdateService = require("../../services/user/userUpdateService");
-const userDetailsService = require("../../services/user/userDetailsService");
-const sendEmailUtility = require("../../utility/sendEmailUtility");
+const DataModel = require('../../models/admin/adminModel');
+const UserModel = require('../../models/customer/customerModel');
+const OTPModel = require('../../models/customer/OTPModel');
+const ListService = require('../../services/common/ListService');
+const customerCreateService = require('../../services/user/customerCreateService');
+const customerLoginService = require('../../services/user/customerLoginService');
+const userUpdateService = require('../../services/user/userUpdateService');
+const userDetailsService = require('../../services/user/userDetailsService');
+const sendEmailUtility = require('../../utility/sendEmailUtility');
 
 exports.Registration = async (req, res) => {
-  let Result = await customerCreateService(req, DataModel)
-  res.status(200).json(Result)
-}
+  const Result = await customerCreateService(req, DataModel);
+  res.status(200).json(Result);
+};
 
 exports.Login = async (req, res) => {
-  let Result = await customerLoginService(req, DataModel)
-  res.status(200).json(Result)
-}
+  const Result = await customerLoginService(req, DataModel);
+  res.status(200).json(Result);
+};
 
 // update profile
 exports.updateProfile = async (req, res) => {
-  let Result = await userUpdateService(req, DataModel)
-  res.status(200).json(Result)
+  const Result = await userUpdateService(req, DataModel);
+  res.status(200).json(Result);
 };
 
 // get user profile
 exports.getAdminProfile = async (req, res) => {
-  let Result = await userDetailsService(req, DataModel)
-  res.status(200).json(Result)
+  const Result = await userDetailsService(req, DataModel);
+  res.status(200).json(Result);
 };
 
 // recover verify email
@@ -96,4 +98,12 @@ exports.resetPassword = async (req, res) => {
   } catch (error) {
     res.status(400).json({ status: 'error', data: error });
   }
+};
+
+exports.getUsers = async (req, res) => {
+  const SearchRgx = { $regex: req.params.searchKeyword, $options: 'i' };
+  const SearchArray = [{ email: SearchRgx }, { firstName: SearchRgx },
+    { lastName: SearchRgx }, { phoneNo: SearchRgx }];
+  const Result = await ListService(req, UserModel, SearchArray);
+  res.status(200).json(Result);
 };
