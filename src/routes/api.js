@@ -51,7 +51,7 @@ router.get('/ItemCategoryList/:pageNo/:perPage/:searchKeyword', ItemCategoryCont
 router.get('/CategoryTypesDropDown', ItemCategoryController.CategoryTypesDropDown);
 router.get('/categoryWiseNumOfMenuItem', ItemCategoryController.categoryWiseNumOfMenuItem);
 router.get('/deleteCategory/:id', ItemCategoryController.deleteCategory);
-/* router.get('/MenuItemTypesDetailsByID/:id', ItemCategoryController.MenuItemTypesDetailsByID); */
+router.get('/MenuItemTypesDetailsByID/:id', ItemCategoryController.MenuItemTypesDetailsByID);
 
 // Menu Item
 router.post('/CreateItem', ItemController.CreateItem);
