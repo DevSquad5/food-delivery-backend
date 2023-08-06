@@ -8,13 +8,13 @@ const OneJoinDetailsByIdService = async (
     // debugger;
     const data = await DataModel.aggregate([
       JoinStage,
-      { $match: { _id: id } },
-      /* {
+      { $match: { id } },
+      {
         $facet: {
           Total: [{ $count: 'count' }],
           Rows: [],
         },
-      }, */
+      },
     ]);
 
     return { status: 'success', data };

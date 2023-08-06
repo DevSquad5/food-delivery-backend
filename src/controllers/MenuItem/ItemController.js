@@ -90,6 +90,7 @@ exports.deleteItem = async (req, res) => {
   res.status(200).json(Result);
 };
 
+// Not working
 exports.GetItemDetailsById = async (req, res) => {
   const JoinStage = {
     $lookup: {
