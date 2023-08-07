@@ -19,6 +19,7 @@ const {
   addCustomerValidator,
   addCustomerValidationHandler,
 } = require('../middlewares/customer/customerValidator');
+const { plaseOrder } = require('../controllers/order/orderController');
 
 const router = express.Router();
 router.use(express.json());
@@ -51,13 +52,19 @@ router.get('/ItemCategoryList/:pageNo/:perPage/:searchKeyword', ItemCategoryCont
 router.get('/CategoryTypesDropDown', ItemCategoryController.CategoryTypesDropDown);
 router.get('/categoryWiseNumOfMenuItem', ItemCategoryController.categoryWiseNumOfMenuItem);
 router.get('/deleteCategory/:id', ItemCategoryController.deleteCategory);
-/* router.get('/MenuItemTypesDetailsByID/:id', ItemCategoryController.MenuItemTypesDetailsByID); */
+router.get('/MenuItemTypesDetailsByID/:id', ItemCategoryController.MenuItemTypesDetailsByID);
 
 // Menu Item
 router.post('/CreateItem', ItemController.CreateItem);
 router.post('/UpdateItem/:id', ItemController.UpdateItem);
-router.get('/ItemList/:pageNo/:perPage/:searchKeyword', ItemController.ItemList);
-router.get('/categoryWiseItems/:searchKeyword', ItemController.categoryWiseItems);
+router.get(
+  '/ItemList/:pageNo/:perPage/:searchKeyword',
+  ItemController.ItemList,
+);
+router.get(
+  '/categoryWiseItems/:searchKeyword',
+  ItemController.categoryWiseItems,
+);
 router.get('/deleteItem/:id', ItemController.deleteItem);
 router.get('/GetMenuItemById/:id', ItemController.GetMenuItemById);
 router.get('/GetItemDetailsById/:id', ItemController.GetItemDetailsById);
@@ -65,11 +72,28 @@ router.get('/GetItemDetailsById/:id', ItemController.GetItemDetailsById);
 // Admin
 router.post('/registration/admin', adminController.Registration);
 router.post('/login/admin', adminController.Login);
-router.post('/updateProfile/admin', authVerifyMiddleware, adminController.updateProfile);
-router.get('/profile/admin', authVerifyMiddleware, adminController.getAdminProfile);
-router.get('/recoverVerifyEmail/admin/:email', adminController.recoverVerifyEmail);
-router.get('/recoverVerifyOTP/admin/:email/:otp', adminController.recoverVerifyOTP);
+router.post(
+  '/updateProfile/admin',
+  authVerifyMiddleware,
+  adminController.updateProfile,
+);
+router.get(
+  '/profile/admin',
+  authVerifyMiddleware,
+  adminController.getAdminProfile,
+);
+router.get(
+  '/recoverVerifyEmail/admin/:email',
+  adminController.recoverVerifyEmail,
+);
+router.get(
+  '/recoverVerifyOTP/admin/:email/:otp',
+  adminController.recoverVerifyOTP,
+);
 router.post('/resetPassword/admin', adminController.resetPassword);
 router.get('/getUsers/:pageNo/:perPage/:searchKeyword', authVerifyMiddleware, adminController.getUsers);
+
+// order
+router.post('/placeOrder', plaseOrder);
 
 module.exports = router;

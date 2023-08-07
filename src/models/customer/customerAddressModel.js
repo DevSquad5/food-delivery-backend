@@ -15,6 +15,6 @@ const dataSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-const CustomerLocation = mongoose.model('customerLocation', dataSchema);
+const CustomerAddress = mongoose.model('customerLocation', dataSchema);
 
-module.exports = CustomerLocation;
+module.exports = CustomerAddress;
