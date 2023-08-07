@@ -19,6 +19,7 @@ const {
   addCustomerValidator,
   addCustomerValidationHandler,
 } = require('../middlewares/customer/customerValidator');
+const { plaseOrder } = require('../controllers/order/orderController');
 
 const router = express.Router();
 router.use(express.json());
@@ -65,17 +66,40 @@ router.get('/deleteCategory/:id', ItemCategoryController.deleteCategory);
 // Menu Item
 router.post('/CreateItem', ItemController.CreateItem);
 router.post('/UpdateItem/:id', ItemController.UpdateItem);
-router.get('/ItemList/:pageNo/:perPage/:searchKeyword', ItemController.ItemList);
-router.get('/categoryWiseItems/:searchKeyword', ItemController.categoryWiseItems);
+router.get(
+  '/ItemList/:pageNo/:perPage/:searchKeyword',
+  ItemController.ItemList,
+);
+router.get(
+  '/categoryWiseItems/:searchKeyword',
+  ItemController.categoryWiseItems,
+);
 router.get('/deleteItem/:id', ItemController.deleteItem);
 
 // Admin
 router.post('/registration/admin', adminController.Registration);
 router.post('/login/admin', adminController.Login);
-router.post('/updateProfile/admin', authVerifyMiddleware, adminController.updateProfile);
-router.get('/profile/admin', authVerifyMiddleware, adminController.getAdminProfile);
-router.get('/recoverVerifyEmail/admin/:email', adminController.recoverVerifyEmail);
-router.get('/recoverVerifyOTP/admin/:email/:otp', adminController.recoverVerifyOTP);
+router.post(
+  '/updateProfile/admin',
+  authVerifyMiddleware,
+  adminController.updateProfile,
+);
+router.get(
+  '/profile/admin',
+  authVerifyMiddleware,
+  adminController.getAdminProfile,
+);
+router.get(
+  '/recoverVerifyEmail/admin/:email',
+  adminController.recoverVerifyEmail,
+);
+router.get(
+  '/recoverVerifyOTP/admin/:email/:otp',
+  adminController.recoverVerifyOTP,
+);
 router.post('/resetPassword/admin', adminController.resetPassword);
+
+// order
+router.post('/placeOrder', plaseOrder);
 
 module.exports = router;
