@@ -1,4 +1,5 @@
 // Cloudinary Lib Import
+const { readdirSync } = require('fs');
 const cloudinary = require('cloudinary');
 
 const express = require('express');
@@ -13,7 +14,6 @@ const cors = require('cors');
 // Database Lib Import
 const mongoose = require('mongoose');
 // read directory for routers
-const { readdirSync } = require('fs');
 
 const app = express();
 
@@ -44,7 +44,7 @@ app.use('*', (req, res) => {
   res.status(404).json({ status: 'fail', data: 'Not Found' });
 });
 
-cloudinary.config({
+cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
@@ -72,3 +72,4 @@ mongoose
   .catch((err) => console.log(err));
 
 module.exports = app;
+module.exports = cloudinary;
