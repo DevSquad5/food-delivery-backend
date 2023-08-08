@@ -3,6 +3,7 @@ const Order = require('../../models/order/orderModel');
 const OrderItem = require('../../models/order/orderItemModel');
 const OrderAddress = require('../../models/order/orderAddressModel');
 const ItemModel = require('../../models/MenuItem/ItemModel');
+const ListTwoJoinService = require('../../services/common/ListTwoJoinService');
 
 // POST request to create a new order
 const placeOrder = async (req, res) => {
@@ -104,4 +105,47 @@ const placeOrder = async (req, res) => {
   }
 };
 
-module.exports = { placeOrder };
+const findAllOrders = async (req, res) => {
+  try {
+    const result = await Order.find();
+    res.status(200).json({ status: 'success', data: result });
+  } catch (error) {
+    res.status(200).json({ status: 'success', data: error });
+  }
+};
+
+const findOrderList = async (req, res) => {
+  const SearchRgx = { $regex: req.params.searchKeyword, $options: 'i' };
+  const JoinStage1 = {
+    $lookup: {
+      from: 'customers',
+      localField: 'customerId',
+      foreignField: '_id',
+      as: 'info',
+    },
+  };
+  const JoinStage2 = {
+    $lookup: {
+      from: 'orderaddresses',
+      localField: 'addressId',
+      foreignField: '_id',
+      as: 'address',
+    },
+  };
+  const SearchArray = [
+    { orderType: SearchRgx }, { paymentMethod: SearchRgx }, { 'info.email': SearchRgx },
+    { 'info.firstName': SearchRgx },
+    { 'info.lastName': SearchRgx }, { 'info.phoneNo': SearchRgx },
+    { 'address.city': SearchRgx },
+  ];
+  const Result = await ListTwoJoinService(
+    req,
+    Order,
+    SearchArray,
+    JoinStage1,
+    JoinStage2,
+  );
+  res.status(200).json(Result);
+};
+
+module.exports = { placeOrder, findAllOrders, findOrderList };

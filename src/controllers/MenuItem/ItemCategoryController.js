@@ -47,6 +47,7 @@ exports.categoryWiseNumOfMenuItem = async (req, res) => {
       {
         $project: {
           category: '$CategoryName', // Replace 'CategoryName' with the actual field name for the category in the "DataModel" collection.
+          ItemImage: 1,
           ItemCategory: 1,
           numberOfMenuItems: { $size: '$items' },
         },
