@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const DataModel = require('../../models/admin/adminModel');
 const UserModel = require('../../models/customer/customerModel');
 const OTPModel = require('../../models/customer/OTPModel');
@@ -36,7 +37,7 @@ exports.recoverVerifyEmail = async (req, res) => {
   const OTPCode = Math.floor(100000 + Math.random() * 900000);
 
   try {
-    const result = await User.aggregate([
+    const result = await UserModel.aggregate([
       { $match: { email } },
       { $count: 'total' },
     ]);
@@ -87,7 +88,7 @@ exports.resetPassword = async (req, res) => {
     ]);
     if (otpCount.length > 0) {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const updatedPass = await User.updateOne(
+      const updatedPass = await UserModel.updateOne(
         { email },
         { password: hashedPassword },
       );

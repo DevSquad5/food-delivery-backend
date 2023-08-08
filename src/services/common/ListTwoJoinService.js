@@ -3,12 +3,12 @@ const ListTwoJoinService = async (Request, DataModel, SearchArray, JoinStage1, J
     const pageNo = Number(Request.params.pageNo);
     const perPage = Number(Request.params.perPage);
     const searchValue = Request.params.searchKeyword;
-    const UserEmail = Request.headers.email;
+    // const UserEmail = Request.headers.email;
     const skipRow = (pageNo - 1) * perPage;
     let data;
     if (searchValue !== '0') {
       data = await DataModel.aggregate([
-        { $match: { UserEmail } },
+
         JoinStage1, JoinStage2,
         { $match: { $or: SearchArray } },
         {
@@ -20,7 +20,7 @@ const ListTwoJoinService = async (Request, DataModel, SearchArray, JoinStage1, J
       ]);
     } else {
       data = await DataModel.aggregate([
-        { $match: { UserEmail } },
+
         JoinStage1, JoinStage2,
         {
           $facet: {

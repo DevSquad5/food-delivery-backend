@@ -81,7 +81,7 @@ exports.categoryWiseItems = async (req, res) => {
     );
     res.status(200).json(Result);
   } catch (error) {
-    res.status(200).json(Result);
+    res.status(200).json(error);
   }
 };
 

@@ -5,7 +5,6 @@ const OneJoinDetailsByIdService = async (
 ) => {
   try {
     const { id } = Request.params;
-    // debugger;
     const data = await DataModel.aggregate([
       JoinStage,
       { $match: { id } },
