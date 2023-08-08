@@ -3,7 +3,6 @@ const Order = require('../../models/order/orderModel');
 const OrderItem = require('../../models/order/orderItemModel');
 const OrderAddress = require('../../models/order/orderAddressModel');
 const ItemModel = require('../../models/MenuItem/ItemModel');
-const CustomerLocation = require('../../models/customer/customerAddressModel');
 
 // POST request to create a new order
 const placeOrder = async (req, res) => {
@@ -41,30 +40,22 @@ const placeOrder = async (req, res) => {
     await Promise.all(orderItemPromises);
 
     // Check if the delivery address is a new address (not selected from existing addresses)
-    let orderAddress;
-    if (deliveryAddress.isNewAddress) {
-      // Create the new address and associate it with the customer
-      orderAddress = new OrderAddress({
-        address: deliveryAddress.address,
-        address_type: deliveryAddress.addressType,
-        floor: deliveryAddress.floor,
-        house: deliveryAddress.house,
-        lat: deliveryAddress.lat,
-        lng: deliveryAddress.lng,
-        road: deliveryAddress.road,
-      });
-      await orderAddress.save({ session });
-    } else {
-      // If the delivery address is not a new address, use the selected address ID from the frontend
-      orderAddress = await CustomerLocation.findOne({
-        _id: deliveryAddress.addressId,
-      });
-    }
+    // Create the new address and associate it with the customer
+    const NewOrderAddress = new OrderAddress({
+      address: deliveryAddress.address,
+      address_type: deliveryAddress.address_type,
+      floor: deliveryAddress.floor,
+      house: deliveryAddress.house,
+      lat: deliveryAddress.lat,
+      lng: deliveryAddress.lng,
+      road: deliveryAddress.road,
+    });
+    await NewOrderAddress.save({ session });
 
     // Create the order
     const order = new Order({
       customerId,
-      addressId: orderAddress._id,
+      addressId: NewOrderAddress._id,
       orderType,
       paymentMethod,
       discountAmount,
