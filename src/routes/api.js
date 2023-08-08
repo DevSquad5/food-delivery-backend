@@ -19,7 +19,7 @@ const {
   addCustomerValidator,
   addCustomerValidationHandler,
 } = require('../middlewares/customer/customerValidator');
-const { plaseOrder } = require('../controllers/order/orderController');
+const { placeOrder } = require('../controllers/order/orderController');
 
 const router = express.Router();
 router.use(express.json());
@@ -94,6 +94,6 @@ router.post('/resetPassword/admin', adminController.resetPassword);
 router.get('/getUsers/:pageNo/:perPage/:searchKeyword', authVerifyMiddleware, adminController.getUsers);
 
 // order
-router.post('/placeOrder', plaseOrder);
+router.post('/placeOrder', placeOrder);
 
 module.exports = router;
