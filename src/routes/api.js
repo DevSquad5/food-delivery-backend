@@ -8,8 +8,11 @@ const {
   resetPassword, addLocation, getLocations, deleteLocation,
 } = require('../controllers/customer/customersController');
 const authVerifyMiddleware = require('../middlewares/common/authVerifyModdleware');
-const { addCustomerValidator, addCustomerValidationHandler } = require('../middlewares/customer/customerValidator');
-const { plaseOrder, findAllOrders, findOrderList } = require('../controllers/order/orderController');
+const {
+  addCustomerValidator,
+  addCustomerValidationHandler,
+} = require('../middlewares/customer/customerValidator');
+const { placeOrder, findAllOrders, findOrderList } = require('../controllers/order/orderController');
 
 const router = express.Router();
 router.use(express.json());
@@ -59,7 +62,7 @@ router.post('/resetPassword/admin', adminController.resetPassword);
 router.get('/getUsers/:pageNo/:perPage/:searchKeyword', authVerifyMiddleware, adminController.getUsers);
 
 // order
-router.post('/placeOrder', plaseOrder);
+router.post('/placeOrder', placeOrder);
 router.get('/findAllOrders', findAllOrders);
 router.get('/findOrderList/:pageNo/:perPage/:searchKeyword', findOrderList);
 

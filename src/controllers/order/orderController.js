@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Order = require('../../models/order/orderModel');
 const OrderItem = require('../../models/order/orderItemModel');
 const OrderAddress = require('../../models/order/orderAddressModel');
@@ -6,8 +7,11 @@ const CustomerLocation = require('../../models/customer/customerAddressModel');
 const ListTwoJoinService = require('../../services/common/ListTwoJoinService');
 
 // POST request to create a new order
-const plaseOrder = async (req, res) => {
+const placeOrder = async (req, res) => {
+  const session = await mongoose.startSession();
+
   try {
+    session.startTransaction();
     const {
       customerId,
       orderType,
@@ -23,8 +27,8 @@ const plaseOrder = async (req, res) => {
 
     const orderItemPromises = orderItems.map(async (item) => {
       const { itemId, quantity } = item;
-      const orderItem = await ItemModel.findById(itemId).exec();
-      console.log(orderItem);
+      const orderItem = await ItemModel.findById(itemId);
+
       const productPrice = orderItem.UnitPrice;
       const discountPercentage = orderItem.Discount;
 
@@ -36,8 +40,6 @@ const plaseOrder = async (req, res) => {
 
     // Wait for all the order item promises to complete concurrently
     await Promise.all(orderItemPromises);
-
-    console.log('totalAmount', totalAmount, 'discountAmount', discountAmount);
 
     // Check if the delivery address is a new address (not selected from existing addresses)
     let orderAddress;
@@ -52,12 +54,12 @@ const plaseOrder = async (req, res) => {
         lng: deliveryAddress.lng,
         road: deliveryAddress.road,
       });
-      await orderAddress.save();
+      await orderAddress.save({ session });
     } else {
       // If the delivery address is not a new address, use the selected address ID from the frontend
       orderAddress = await CustomerLocation.findOne({
         _id: deliveryAddress.addressId,
-      }).exec();
+      });
     }
 
     // Create the order
@@ -72,25 +74,38 @@ const plaseOrder = async (req, res) => {
     });
 
     // Save the order to the database
-    await order.save();
+    await order.save({ session });
 
     // Create order items and associate them with the order
     const createOrderItemPromises = orderItems.map(async (item) => {
       const { itemId, quantity } = item;
-      const orderItem = await ItemModel.findOne({ _id: itemId }).exec();
-      return OrderItem.create({
-        orderId: order._id,
-        productId: orderItem._id,
-        quantity,
-        price: orderItem.UnitPrice,
-      });
+      const orderItem = await ItemModel.findOne({ _id: itemId });
+      return OrderItem.create(
+        [
+          {
+            orderId: order._id,
+            productId: orderItem._id,
+            quantity,
+            price: orderItem.UnitPrice,
+          },
+        ],
+        { session },
+      );
     });
 
     // Wait for all the order item promises to complete concurrently
     await Promise.all(createOrderItemPromises);
 
+    // Transaction Success
+    await session.commitTransaction();
+    session.endSession();
+
     res.status(201).json({ status: 'success', data: order });
   } catch (error) {
+    // Transaction Failed
+    await session.abortTransaction();
+    session.endSession();
+
     res.status(500).json({
       status: 'error',
       message: 'Failed to create the order.',
@@ -142,4 +157,4 @@ const findOrderList = async (req, res) => {
   res.status(200).json(Result);
 };
 
-module.exports = { plaseOrder, findAllOrders, findOrderList };
+module.exports = { placeOrder, findAllOrders, findOrderList };
