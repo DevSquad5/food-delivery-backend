@@ -44,7 +44,7 @@ const placeOrder = async (req, res) => {
     // Create the new address and associate it with the customer
     const NewOrderAddress = new OrderAddress({
       address: deliveryAddress.address,
-      address_type: deliveryAddress.address_type,
+      addressType: deliveryAddress.addressType,
       floor: deliveryAddress.floor,
       house: deliveryAddress.house,
       lat: deliveryAddress.lat,
@@ -133,9 +133,12 @@ const findOrderList = async (req, res) => {
     },
   };
   const SearchArray = [
-    { orderType: SearchRgx }, { paymentMethod: SearchRgx }, { 'info.email': SearchRgx },
+    { orderType: SearchRgx },
+    { paymentMethod: SearchRgx },
+    { 'info.email': SearchRgx },
     { 'info.firstName': SearchRgx },
-    { 'info.lastName': SearchRgx }, { 'info.phoneNo': SearchRgx },
+    { 'info.lastName': SearchRgx },
+    { 'info.phoneNo': SearchRgx },
     { 'address.city': SearchRgx },
   ];
   const Result = await ListTwoJoinService(
