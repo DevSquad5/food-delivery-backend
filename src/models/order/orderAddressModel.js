@@ -7,8 +7,7 @@ const addressSchema = new mongoose.Schema({
   },
   addressType: {
     type: String,
-    enum: ['Home Delivery', 'Take Away'],
-    required: true,
+    enum: ['Home', 'Office', 'Other'],
   },
   floor: String,
   house: String,
