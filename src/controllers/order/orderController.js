@@ -4,6 +4,8 @@ const OrderItem = require('../../models/order/orderItemModel');
 const OrderAddress = require('../../models/order/orderAddressModel');
 const ItemModel = require('../../models/MenuItem/ItemModel');
 const ListTwoJoinService = require('../../services/common/ListTwoJoinService');
+const ListTwoJoinServiceById = require('../../services/common/ListTwoJoinServiceById');
+const DeleteService = require('../../services/common/DeleteService');
 
 // POST request to create a new order
 const placeOrder = async (req, res) => {
@@ -151,4 +153,38 @@ const findOrderList = async (req, res) => {
   res.status(200).json(Result);
 };
 
-module.exports = { placeOrder, findAllOrders, findOrderList };
+// not working
+const getOrderById = async (req, res) => {
+  const JoinStage1 = {
+    $lookup: {
+      from: 'customers',
+      localField: 'customerId',
+      foreignField: '_id',
+      as: 'info',
+    },
+  };
+  const JoinStage2 = {
+    $lookup: {
+      from: 'orderaddresses',
+      localField: 'addressId',
+      foreignField: '_id',
+      as: 'address',
+    },
+  };
+  const Result = await ListTwoJoinServiceById(
+    req,
+    Order,
+    JoinStage1,
+    JoinStage2,
+  );
+  res.status(200).json(Result);
+};
+
+const deleteOrder = async (req, res) => {
+  const Result = await DeleteService(req, Order);
+  res.status(200).json(Result);
+};
+
+module.exports = {
+  placeOrder, findAllOrders, findOrderList, getOrderById, deleteOrder,
+};

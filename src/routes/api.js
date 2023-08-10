@@ -12,7 +12,9 @@ const {
   addCustomerValidator,
   addCustomerValidationHandler,
 } = require('../middlewares/customer/customerValidator');
-const { placeOrder, findAllOrders, findOrderList } = require('../controllers/order/orderController');
+const {
+  placeOrder, findAllOrders, findOrderList, getOrderById, deleteOrder,
+} = require('../controllers/order/orderController');
 
 const router = express.Router();
 router.use(express.json());
@@ -65,5 +67,7 @@ router.get('/getUsers/:pageNo/:perPage/:searchKeyword', authVerifyMiddleware, ad
 router.post('/placeOrder', placeOrder);
 router.get('/findAllOrders', findAllOrders);
 router.get('/findOrderList/:pageNo/:perPage/:searchKeyword', findOrderList);
+router.get('/getOrderById/:id', getOrderById);
+router.get('/deleteOrder/:id', deleteOrder);
 
 module.exports = router;
