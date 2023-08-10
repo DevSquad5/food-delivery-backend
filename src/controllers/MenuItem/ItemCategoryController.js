@@ -52,11 +52,6 @@ exports.categoryWiseNumOfMenuItem = async (req, res) => {
           numberOfMenuItems: { $size: '$items' },
         },
       },
-      {
-        $match: {
-          numberOfMenuItems: { $gt: 0 }, // Filter out categories with no menu items
-        },
-      },
     ]);
 
     res.status(200).json({ status: 'success', data: Result });
