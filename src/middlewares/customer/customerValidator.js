@@ -16,15 +16,6 @@ const addCustomerValidator = [
     .trim(),
   check('email').isEmail().withMessage('Invalid email address').trim(),
 
-  check('phoneNo')
-    .isMobilePhone('bn-BD', { strictMode: true })
-    .withMessage('Mobile number must be valid Bangladeshi number!'),
-
-  check('password')
-    .isStrongPassword()
-    .withMessage(
-      'Password must be 8 characters long & should contain at least 1 lowercase, 1 uppercase, 1 number & 1 symbol',
-    ),
 ];
 
 const addCustomerValidationHandler = (req, res, next) => {
